@@ -1,4 +1,4 @@
 S2dMath
 =======
 
-A simple math lib mostly for performing BigDecimal Math using a simple API.
+A math lib mostly for working with BigDecimal using a simple API.
