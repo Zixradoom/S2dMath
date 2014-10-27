@@ -1,24 +1,44 @@
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
 
-// gradle wrapper task
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+version = '1.0.0.1'
+group = 'com.s2d'
+
 task wrapper(type: Wrapper) {
   gradleVersion = '1.4'
 }
 
 repositories {
-  mavenCentral()
+  maven {
+    credentials {
+      username mavenUser
+      password mavenPassword
+    }
+    url "https://www.simonsoftwaredesign.info:8082/nexus/content/groups/public"
+  }
 }
 
 dependencies {
-  compile group: 'junit', name: 'junit', version: '4.+'
+  testCompile group: 'junit', name: 'junit', version: '4.+'
   compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0.2'
   compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.0.2'
 }
 
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
-version = '1.0'
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: "https://www.simonsoftwaredesign.info:8082/nexus/content/repositories/releases") {
+        authentication(userName: mavenUser, password: mavenPassword)
+      }
+      snapshotRepository(url: "https://www.simonsoftwaredesign.info:8082/nexus/content/repositories/snapshots") {
+        authentication(userName: mavenUser, password: mavenPassword)
+      }
+    }
+  }
+}
 
 javadoc.options.links("http://docs.oracle.com/javase/7/docs/api/")
