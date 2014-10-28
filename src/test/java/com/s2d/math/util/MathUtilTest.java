@@ -1,5 +1,7 @@
 package com.s2d.math.util;
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigDecimal;
 
 import org.junit.After;
@@ -33,34 +35,49 @@ public final class MathUtilTest
   @Test
   public void clampLowerLessThanUpper ()
   {
-    MathUtil.clamp ( BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.TEN );
+    BigDecimal value = MathUtil.clamp ( BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.TEN );
+    int compare = BigDecimal.ONE.compareTo ( value );
+    assertEquals ( "", Integer.valueOf ( 0 ), Integer.valueOf ( compare ) );
   }
   
   @Test
   public void clampValueLessThanLower ()
   {
     BigDecimal value = MathUtil.clamp ( BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.TEN );
-    // TODO assertTrue
+    int compare = BigDecimal.ONE.compareTo ( value );
+    assertEquals ( "", Integer.valueOf ( 0 ), Integer.valueOf ( compare ) );
   }
   
   @Test
   public void clampValueEqualToLower ()
   {
+    BigDecimal value = MathUtil.clamp ( BigDecimal.ONE, BigDecimal.ONE, BigDecimal.TEN );
+    int compare = BigDecimal.ONE.compareTo ( value );
+    assertEquals ( "", Integer.valueOf ( 0 ), Integer.valueOf ( compare ) );
   }
   
   @Test
   public void clampValueGreaterThanLower ()
   {
+    BigDecimal value = MathUtil.clamp ( BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.TEN );
+    int compare = BigDecimal.ONE.compareTo ( value );
+    assertEquals ( "", Integer.valueOf ( 0 ), Integer.valueOf ( compare ) );
   }
   
   @Test
   public void clampValueEqualToUpper ()
   {
+    BigDecimal value = MathUtil.clamp ( BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.TEN );
+    int compare = BigDecimal.TEN.compareTo ( value );
+    assertEquals ( "", Integer.valueOf ( 0 ), Integer.valueOf ( compare ) );
   }
   
   @Test
   public void clampValueGreaterThanUpper ()
   {
+    BigDecimal value = MathUtil.clamp ( BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ONE );
+    int compare = BigDecimal.ONE.compareTo ( value );
+    assertEquals ( "", Integer.valueOf ( 0 ), Integer.valueOf ( compare ) );
   }
   
   @Test(expected=NullPointerException.class)
