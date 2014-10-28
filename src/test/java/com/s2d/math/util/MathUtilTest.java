@@ -1,5 +1,7 @@
 package com.s2d.math.util;
 
+import java.math.BigDecimal;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,24 +18,29 @@ public final class MathUtilTest
   {
   }
   
-  @Test
+  @Test(expected=IllegalArgumentException.class)
   public void clampLowerGreaterThanUpper ()
   {
+    MathUtil.clamp ( BigDecimal.ZERO, BigDecimal.TEN, BigDecimal.ONE );
   }
   
-  @Test
+  @Test(expected=IllegalArgumentException.class)
   public void clampLowerEqualToUpper ()
   {
+    MathUtil.clamp ( BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ONE );
   }
   
   @Test
   public void clampLowerLessThanUpper ()
   {
+    MathUtil.clamp ( BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.TEN );
   }
   
   @Test
   public void clampValueLessThanLower ()
   {
+    BigDecimal value = MathUtil.clamp ( BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.TEN );
+    // TODO assertTrue
   }
   
   @Test
@@ -56,18 +63,21 @@ public final class MathUtilTest
   {
   }
   
-  @Test
+  @Test(expected=NullPointerException.class)
   public void clampValueNull ()
   {
+    MathUtil.clamp ( null, BigDecimal.ONE, BigDecimal.ONE );
   }
   
-  @Test
+  @Test(expected=NullPointerException.class)
   public void clampLowerNull ()
   {
+    MathUtil.clamp ( BigDecimal.ONE, null, BigDecimal.ONE );
   }
   
-  @Test
+  @Test(expected=NullPointerException.class)
   public void clampUpperNull ()
   {
+    MathUtil.clamp ( BigDecimal.ONE, BigDecimal.ONE, null );
   }
 }
