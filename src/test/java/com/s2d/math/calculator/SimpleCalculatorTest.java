@@ -21,7 +21,7 @@ public class SimpleCalculatorTest
   @Test(expected=CalculatorStackException.class)
   public void popEmptyCalculatorStack ()
   {
-    BigDecimal value = calculator.pop ();
+    calculator.pop ();
   }
   
   @Test
@@ -56,6 +56,16 @@ public class SimpleCalculatorTest
     calculator.push ( value );
   }
   
+  @Test
+  public void pushString ()
+  {
+    String value = "10.875";
+    calculator.push ( value );
+    BigDecimal newValue = calculator.pop ();
+    int compare = new BigDecimal ( "10.875" ).compareTo ( newValue );
+    assertEquals ( "", 0, compare );
+  }
+  
   @Test(expected=NullPointerException.class)
   public void pushNullBigDecimal ()
   {
@@ -63,11 +73,31 @@ public class SimpleCalculatorTest
     calculator.push ( value );
   }
   
+  @Test
+  public void pushBigDecimal ()
+  {
+    BigDecimal value = new BigDecimal ( "21" );
+    calculator.push ( value );
+    BigDecimal newValue = calculator.pop ();
+    int compare = value.compareTo ( newValue );
+    assertEquals ( "", 0, compare );
+  }
+  
   @Test(expected=NullPointerException.class)
   public void pushNullBigInteger ()
   {
     BigInteger value = null;
     calculator.push ( value );
+  }
+  
+  @Test
+  public void pushBigInteger ()
+  {
+    BigInteger value = new BigInteger ( "99" );
+    calculator.push ( value );
+    BigDecimal newValue = calculator.pop ();
+    int compare = new BigDecimal ( value ).compareTo ( newValue );
+    assertEquals ( "", 0, compare );
   }
   
   @Test(expected=CalculatorStackException.class)
