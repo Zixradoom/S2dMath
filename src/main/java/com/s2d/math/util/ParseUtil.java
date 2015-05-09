@@ -1,5 +1,9 @@
 package com.s2d.math.util;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLogger.Level;
+import org.slf4j.ext.XLoggerFactory;
+
 /**
  * 
  * Parsing utility functions
@@ -9,15 +13,19 @@ package com.s2d.math.util;
  */
 public final class ParseUtil
 {
+  private static final XLogger LOGGER = XLoggerFactory.getXLogger ( ParseUtil.class );
+  
 	public static Byte tryParseByte ( String str )
 	{
+	  LOGGER.entry ( str );
 		try
 		{
-			return Byte.valueOf ( str );
+			return LOGGER.exit ( Byte.valueOf ( str ) );
 		}
 		catch ( NumberFormatException e )
 		{
-			return null;
+		  LOGGER.catching ( Level.TRACE, e );
+			return LOGGER.exit ( null );
 		}
 	}
 	

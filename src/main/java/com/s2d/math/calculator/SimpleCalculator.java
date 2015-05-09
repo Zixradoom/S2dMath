@@ -11,12 +11,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+
 import com.s2d.math.util.MathUtil;
 import com.s2d.math.util.Random;
 import com.s2d.math.util.RandomWrapper;
 
 public final class SimpleCalculator implements Calculator
 {
+  private static final XLogger LOGGER = XLoggerFactory.getXLogger ( SimpleCalculator.class );
+  
 	private static final int DEFAULT_MEMORY_SIZE = 16;
 	private static final MathContext DEFALUT_MATH_CONTEXT = MathContext.DECIMAL128;
 	private static final Random DEFAULT_RANDOM = new RandomWrapper ( new java.util.Random () );
@@ -114,7 +119,7 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( ArithmeticException e )
 		{
-			throw new CalculatorPrecisionException ( "scale", 2, b, e );
+			throw LOGGER.throwing ( new CalculatorPrecisionException ( "scale", 2, b, e ) );
 		}
 		return this;
 	}
@@ -140,7 +145,7 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( ArithmeticException e )
 		{
-			throw new CalculatorPrecisionException ( "store", 2, b, e );
+			throw LOGGER.throwing ( new CalculatorPrecisionException ( "store", 2, b, e ) );
 		}
 		return this;
 	}
@@ -155,7 +160,7 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( ArithmeticException e )
 		{
-			throw new CalculatorPrecisionException ( "load", 1, a, e );
+			throw LOGGER.throwing ( new CalculatorPrecisionException ( "load", 1, a, e ) );
 		}
 		return this;
 	}
@@ -206,7 +211,7 @@ public final class SimpleCalculator implements Calculator
 	public Calculator push ( BigDecimal value )
 	{
 		if ( value == null )
-			throw new NullPointerException ( "Value is null!!" );
+			throw LOGGER.throwing ( new NullPointerException ( "Value is null!!" ) );
 		stack.push ( value );
 		return this;
 	}
@@ -303,21 +308,21 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( NoSuchElementException e )
 		{
-			throw new CalculatorStackException ( "The Stack is Empty" );
+			throw LOGGER.throwing ( new CalculatorStackException ( "The Stack is Empty" ) );
 		}
 	}
 
 	private void store ( BigDecimal value, int address )
 	{
 		if ( address < 0 || address >= memory.length )
-			throw new CalculatorMemorySegmentationException ( address, memory.length - 1 );
+			throw LOGGER.throwing ( new CalculatorMemorySegmentationException ( address, memory.length - 1 ) );
 		memory[ address ] = value;
 	}
 
 	private BigDecimal load ( int address )
 	{
 		if ( address < 0 || address >= memory.length )
-			throw new CalculatorMemorySegmentationException ( address, memory.length - 1 );
+			throw LOGGER.throwing ( new CalculatorMemorySegmentationException ( address, memory.length - 1 ) );
 		return memory[ address ];
 	}
 }
