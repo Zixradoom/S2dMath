@@ -20,6 +20,7 @@ repositories {
     }
     url "https://www.simonsoftwaredesign.info:8082/nexus/content/groups/public"
   }
+  mavenCentral()
 }
 
 dependencies {
