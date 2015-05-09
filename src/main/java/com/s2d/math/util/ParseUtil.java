@@ -31,61 +31,71 @@ public final class ParseUtil
 	
 	public static Short tryParseShort ( String str )
 	{
+	  LOGGER.entry ( str );
 		try
 		{
-			return Short.valueOf ( str );
+			return LOGGER.exit ( Short.valueOf ( str ) );
 		}
 		catch ( NumberFormatException e )
 		{
-			return null;
+		  LOGGER.catching ( Level.TRACE, e );
+		  return LOGGER.exit ( null );
 		}
 	}
 	
 	public static Integer tryParseInt ( String str )
 	{
+	  LOGGER.entry ( str );
 		try
 		{
-			return Integer.valueOf ( str );
+			return LOGGER.exit ( Integer.valueOf ( str ) );
 		}
 		catch ( NumberFormatException e )
 		{
-			return null;
+		  LOGGER.catching ( Level.TRACE, e );
+      return LOGGER.exit ( null );
 		}
 	}
 	
 	public static Long tryParseLong ( String str )
 	{
+	  LOGGER.entry ( str );
 		try
 		{
-			return Long.valueOf ( str );
+			return LOGGER.exit ( Long.valueOf ( str ) );
 		}
 		catch ( NumberFormatException e )
 		{
-			return null;
+		  LOGGER.catching ( Level.TRACE, e );
+      return LOGGER.exit ( null );
 		}
 	}
 	
 	public static Float tryParseFloat ( String str )
 	{
+	  LOGGER.entry ( str );
 		try
 		{
-			return Float.valueOf ( str );
+			return LOGGER.exit ( Float.valueOf ( str ) );
 		}
 		catch ( NumberFormatException e )
 		{
-			return null;
+		  LOGGER.catching ( Level.TRACE, e );
+      return LOGGER.exit ( null );
 		}
 	}
 	
 	public static Double tryParseDouble ( String str )
 	{
+	  LOGGER.entry ( str );
 		try
 		{
-			return Double.valueOf ( str );
+			return LOGGER.exit ( Double.valueOf ( str ) );
 		}
 		catch ( NumberFormatException e )
 		{
-			return null;
+		  LOGGER.catching ( Level.TRACE, e );
+      return LOGGER.exit ( null );
 		}
 	}
 }
