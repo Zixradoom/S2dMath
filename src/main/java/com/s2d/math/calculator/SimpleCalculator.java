@@ -11,12 +11,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+
 import com.s2d.math.util.MathUtil;
 import com.s2d.math.util.Random;
 import com.s2d.math.util.RandomWrapper;
 
 public final class SimpleCalculator implements Calculator
 {
+  private static final XLogger LOGGER = XLoggerFactory.getXLogger ( SimpleCalculator.class );
+  
 	private static final int DEFAULT_MEMORY_SIZE = 16;
 	private static final MathContext DEFALUT_MATH_CONTEXT = MathContext.DECIMAL128;
 	private static final Random DEFAULT_RANDOM = new RandomWrapper ( new java.util.Random () );
@@ -45,67 +50,75 @@ public final class SimpleCalculator implements Calculator
 	@Override
 	public Calculator duplicate ()
 	{
+	  LOGGER.entry ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a );
 		stack.push ( a );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator abs ()
 	{
+	  LOGGER.entry ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a.abs ( mathContext ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator negate ()
 	{
+	  LOGGER.entry ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a.negate ( mathContext ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator add ()
 	{
+	  LOGGER.entry ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a.add ( b, mathContext ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator subtract ()
 	{
+	  LOGGER.entry ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a.subtract ( b, mathContext ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator multiply ()
 	{
+	  LOGGER.entry ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a.multiply ( b, mathContext ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator divide ()
 	{
+	  LOGGER.entry ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		stack.push ( a.divide ( b, mathContext ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator scale ()
 	{
+	  LOGGER.entry ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		try
@@ -114,24 +127,26 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( ArithmeticException e )
 		{
-			throw new CalculatorPrecisionException ( "scale", 2, b, e );
+			throw LOGGER.throwing ( new CalculatorPrecisionException ( "scale", 2, b, e ) );
 		}
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator clamp ()
 	{
+	  LOGGER.entry ();
 		BigDecimal c = checkedPop ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		stack.push ( MathUtil.clamp ( a, b, c ) );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator store ()
 	{
+	  LOGGER.entry ();
 		BigDecimal b = checkedPop ();
 		BigDecimal a = checkedPop ();
 		try
@@ -140,14 +155,15 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( ArithmeticException e )
 		{
-			throw new CalculatorPrecisionException ( "store", 2, b, e );
+			throw LOGGER.throwing ( new CalculatorPrecisionException ( "store", 2, b, e ) );
 		}
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator load ()
 	{
+	  LOGGER.entry ();
 		BigDecimal a = checkedPop ();
 		try
 		{
@@ -155,169 +171,192 @@ public final class SimpleCalculator implements Calculator
 		}
 		catch ( ArithmeticException e )
 		{
-			throw new CalculatorPrecisionException ( "load", 1, a, e );
+			throw LOGGER.throwing ( new CalculatorPrecisionException ( "load", 1, a, e ) );
 		}
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Calculator pushRandom ()
 	{
-		return push ( random.nextBigDecimal () );
+	  LOGGER.entry ();
+		return LOGGER.exit ( push ( random.nextBigDecimal () ) );
 	}
 
 	@Override
 	public Calculator push ( int value )
 	{
-		return push ( new BigDecimal ( value, mathContext ) );
+	  LOGGER.entry ( Integer.valueOf ( value ) );
+		return LOGGER.exit ( push ( new BigDecimal ( value, mathContext ) ) );
 	}
 
 	@Override
 	public Calculator push ( long value )
 	{
-		return push ( new BigDecimal ( value, mathContext ) );
+	  LOGGER.entry ( Long.valueOf ( value ) );
+		return LOGGER.exit ( push ( new BigDecimal ( value, mathContext ) ) );
 	}
 
 	@Override
 	public Calculator push ( float value )
 	{
-		return push ( new BigDecimal ( value, mathContext ) );
+	  LOGGER.entry ( Float.valueOf ( value ) );
+		return LOGGER.exit ( push ( new BigDecimal ( value, mathContext ) ) );
 	}
 
 	@Override
 	public Calculator push ( double value )
 	{
-		return push ( new BigDecimal ( value, mathContext ) );
+	  LOGGER.entry ( Double.valueOf ( value ) );
+		return LOGGER.exit ( push ( new BigDecimal ( value, mathContext ) ) );
 	}
 
 	@Override
 	public Calculator push ( String value )
 	{
-		return push ( new BigDecimal ( value, mathContext ) );
+	  LOGGER.entry ( value );
+		return LOGGER.exit ( push ( new BigDecimal ( value, mathContext ) ) );
 	}
 
 	@Override
 	public Calculator push ( BigInteger value )
 	{
-		return push ( new BigDecimal ( value, mathContext ) );
+	  LOGGER.entry ( value );
+		return LOGGER.exit ( push ( new BigDecimal ( value, mathContext ) ) );
 	}
 
 	@Override
 	public Calculator push ( BigDecimal value )
 	{
+	  LOGGER.entry ( value );
 		if ( value == null )
-			throw new NullPointerException ( "Value is null!!" );
+			throw LOGGER.throwing ( new NullPointerException ( "Value is null!!" ) );
 		stack.push ( value );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public BigDecimal peek ()
 	{
-		return stack.peek ();
+	  LOGGER.entry ();
+		return LOGGER.exit ( stack.peek () );
 	}
 
 	@Override
 	public BigDecimal pop ()
 	{
-		return checkedPop ();
+	  LOGGER.entry ();
+		return LOGGER.exit ( checkedPop () );
 	}
 	
 	@Override
 	public Calculator clear ()
 	{
+	  LOGGER.entry ();
 		stack.clear ();
 		Arrays.fill ( memory, BigDecimal.ZERO );
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public MathContext getMathContext ()
 	{
-		return mathContext;
+	  LOGGER.entry ();
+		return LOGGER.exit ( mathContext );
 	}
 
 	@Override
 	public Calculator setContext ( MathContext context )
 	{
+	  LOGGER.entry ( context );
 		if ( context == null )
 			this.mathContext = DEFALUT_MATH_CONTEXT;
-		return this;
+		return LOGGER.exit ( this );
 	}
 
 	@Override
 	public Random getRandom ()
 	{
-		return random;
+	  LOGGER.entry ();
+		return LOGGER.exit ( random );
 	}
 	
 	@Override
 	public Calculator setRandom ( Random random )
 	{
+	  LOGGER.entry ( random );
 		if ( random == null )
 			random = DEFAULT_RANDOM;
 		
 		this.random = random;
-		return this;
+		return LOGGER.exit ( this );
 	}
 	
 	@Override
 	public Collection < BigDecimal > getStack ()
 	{
-		return Collections.unmodifiableCollection ( stack );
+	  LOGGER.entry ();
+		return LOGGER.exit ( Collections.unmodifiableCollection ( stack ) );
 	}
 
 	@Override
 	public BigDecimal[] getMemory ()
 	{
-		return Arrays.copyOf ( memory, memory.length );
+	  LOGGER.entry ();
+		return LOGGER.exit ( Arrays.copyOf ( memory, memory.length ) );
 	}
 
 	@Override
 	public String stackToString ()
 	{
+	  LOGGER.entry ();
 		StringBuilder stringBuilder = new StringBuilder ();
 		stringBuilder.append ( '[' );
 		for ( Iterator < BigDecimal > itr = stack.descendingIterator (); itr.hasNext (); )
 			stringBuilder.append ( itr.next () ).append ( ',' );
 		stringBuilder.append ( ']' );
-		return stringBuilder.toString ();
+		return LOGGER.exit ( stringBuilder.toString () );
 	}
 
 	@Override
 	public String memoryToString ()
 	{
+	  LOGGER.entry ();
 		StringBuilder stringBuilder = new StringBuilder ();
 		stringBuilder.append ( '[' );
 		for ( int index = 0; index < memory.length; index++ )
 			stringBuilder.append ( '{' ).append ( index ).append ( '=' ).append ( memory[ index ] ).append ( '}' ).append ( ',' );
 		stringBuilder.append ( ']' );
-		return stringBuilder.toString ();
+		return LOGGER.exit ( stringBuilder.toString () );
 	}
 
 	private BigDecimal checkedPop ()
 	{
+	  LOGGER.entry ();
 		try
 		{
-			return stack.pop ();
+			return LOGGER.exit ( stack.pop () );
 		}
 		catch ( NoSuchElementException e )
 		{
-			throw new CalculatorStackException ( "The Stack is Empty" );
+			throw LOGGER.throwing ( new CalculatorStackException ( "The Stack is Empty" ) );
 		}
 	}
 
 	private void store ( BigDecimal value, int address )
 	{
+	  LOGGER.entry ( value, Integer.valueOf ( address ) );
 		if ( address < 0 || address >= memory.length )
-			throw new CalculatorMemorySegmentationException ( address, memory.length - 1 );
+			throw LOGGER.throwing ( new CalculatorMemorySegmentationException ( address, memory.length - 1 ) );
 		memory[ address ] = value;
+		LOGGER.exit ();
 	}
 
 	private BigDecimal load ( int address )
 	{
+	  LOGGER.entry ( Integer.valueOf ( address ) );
 		if ( address < 0 || address >= memory.length )
-			throw new CalculatorMemorySegmentationException ( address, memory.length - 1 );
-		return memory[ address ];
+			throw LOGGER.throwing ( new CalculatorMemorySegmentationException ( address, memory.length - 1 ) );
+		return LOGGER.exit ( memory[ address ] );
 	}
 }
